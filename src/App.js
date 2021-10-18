@@ -6,10 +6,15 @@ import "./styles/styles.scss";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isUserLoggedIn } from "./redux/actions";
+import {
+  getAllCategory,
+  getInitialData,
+  isUserLoggedIn,
+} from "./redux/actions";
 import Orders from "./components/Orders/Orders";
 import Products from "./components/Products/Products";
 import Category from "./components/Category/Category";
+
 function App(props) {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -17,6 +22,7 @@ function App(props) {
     if (auth.authenticate) {
       dispatch(isUserLoggedIn());
     }
+    dispatch(getInitialData());
   }, []);
   return (
     <div className="App">

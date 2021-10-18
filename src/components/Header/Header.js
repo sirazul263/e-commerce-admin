@@ -5,6 +5,7 @@ import { Link, NavLink } from "react-router-dom";
 import { signOut } from "../../redux/actions";
 const Header = () => {
   const auth = useSelector((state) => state.auth);
+  const token = window.localStorage.getItem("token");
   const dispatch = useDispatch();
   const logout = () => {
     dispatch(signOut());
@@ -47,6 +48,7 @@ const Header = () => {
         expand="lg"
         bg="dark"
         variant="dark"
+        fixed="top"
         style={{ zIndex: 1 }}
       >
         <Container fluid>
@@ -75,9 +77,7 @@ const Header = () => {
               </NavDropdown>
             </Nav>
 
-            {auth.authenticate
-              ? renderLoggedInLinks()
-              : renderNonLoggedInLinks()}
+            {token ? renderLoggedInLinks() : renderNonLoggedInLinks()}
           </Navbar.Collapse>
         </Container>
       </Navbar>

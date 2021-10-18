@@ -6,4 +6,22 @@
   background-color: #eee;
   padding-top: 60px;
   box-shadow: inset 0 0 2px gray;
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li a {
+      text-decoration: none;
+      display: block;
+      color: #333;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      margin: 5px 0 5px 10px;
+      border-radius: 5px 0 0 5px;
+      &.active {
+        background: #333;
+        color: #fff;
+      }
+    }
+  }
 }

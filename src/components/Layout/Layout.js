@@ -26,7 +26,7 @@ const Layout = (props) => {
                 </li>
               </ul>
             </Col>
-            <Col md={10} style={{ marginLeft: "auto" }}>
+            <Col md={10} style={{ marginLeft: "auto", paddingTop: 60 }}>
               {props.children}
             </Col>
           </Row>
