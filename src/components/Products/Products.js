@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../redux/actions";
 import Input from "../../UI/Input/Input";
 import Modals from "../../UI/Modal/Modal";
+import { generatePublicUrl } from "../../urlConfig";
 import Layout from "../Layout/Layout";
 
 const Products = (props) => {
@@ -19,6 +20,8 @@ const Products = (props) => {
   //
 
   const [show, setShow] = useState(false);
+  const [productShow, setProductShow] = useState(false);
+  const [productDetails, setProductDetails] = useState(null);
   const handleClose = () => {
     const form = new FormData();
     form.append("name", name);
@@ -35,7 +38,6 @@ const Products = (props) => {
   };
 
   const handleShow = () => setShow(true);
-
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
   const createCategoryList = (categories, options = []) => {
@@ -55,7 +57,7 @@ const Products = (props) => {
 
   const renderProducts = () => {
     return (
-      <Table responsive>
+      <Table responsive style={{ fontSize: 12 }}>
         <thead>
           <tr>
             <th>#</th>
@@ -63,21 +65,21 @@ const Products = (props) => {
             <th>Price</th>
             <th>Category</th>
             <th>Quantity</th>
-            <th>Description</th>
-            <th>Pictures</th>
           </tr>
         </thead>
         <tbody>
           {product.products.length > 0
-            ? product.products.map((product) => (
-                <tr key={product._id}>
-                  <td>1</td>
+            ? product.products.map((product, index) => (
+                <tr
+                  key={product._id}
+                  onClick={() => showProductDetailsModal(product)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <td>{index + 1}</td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
-                  <td>{product.category}</td>
+                  <td>{product.category.name}</td>
                   <td>{product.quantity}</td>
-                  <td>{product.description}</td>
-                  <td>--</td>
                 </tr>
               ))
             : null}
@@ -86,6 +88,126 @@ const Products = (props) => {
     );
   };
 
+  const renderAddProductModal = () => {
+    return (
+      <Modals show={show} handleClose={handleClose} title={"Add New Product"}>
+        <Input
+          label="Name"
+          type="text"
+          value={name}
+          placeholder="Product Name"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          label="Price"
+          type="text"
+          value={price}
+          placeholder="Price"
+          onChange={(e) => setPrice(e.target.value)}
+        />
+        <Input
+          label="Quantity"
+          type="text"
+          value={quantity}
+          placeholder="Quantity"
+          onChange={(e) => setQuantity(e.target.value)}
+        />
+        <Input
+          label="Description"
+          type="text"
+          value={description}
+          placeholder="Description"
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <Form.Select
+          aria-label="Default select example"
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option>Select Category</option>
+          {createCategoryList(category.categories).map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </Form.Select>
+
+        {productPictures.length > 0
+          ? productPictures.map((pic, index) => (
+              <div key={index}>{pic.name}</div>
+            ))
+          : null}
+        <Input
+          label="Product Images"
+          type="file"
+          placeholder="Product Image"
+          name="productPicture"
+          onChange={handleProductPictures}
+        />
+      </Modals>
+    );
+  };
+  const handleCloseProductDetails = () => {
+    setProductShow(false);
+  };
+  const showProductDetailsModal = (product) => {
+    setProductShow(true);
+    setProductDetails(product);
+  };
+  const renderProductDetailsModal = () => {
+    if (!productDetails) {
+      return null;
+    }
+    return (
+      <Modals
+        show={productShow}
+        handleClose={handleCloseProductDetails}
+        title={"Product Details"}
+        size="lg"
+      >
+        <Row>
+          <Col md={6}>
+            <label className="key">Name</label>
+            <p className="value">{productDetails.name}</p>
+          </Col>
+          <Col md={6}>
+            <label className="key">Price</label>
+            <p className="value">{productDetails.price}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={6}>
+            <label className="key">Category</label>
+            <p className="value">{productDetails.category.name}</p>
+          </Col>
+          <Col md={6}>
+            <label className="key">Quantity</label>
+            <p className="value">{productDetails.quantity}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12}>
+            <label className="key">Description</label>
+            <p className="value">{productDetails.description}</p>
+          </Col>
+        </Row>
+        <Row>
+          <label> Product Pictures</label>
+          <Col className="d-flex mt-3 justify-content-center">
+            {productDetails.productPictures.map((pic) => (
+              <div>
+                <img
+                  src={generatePublicUrl(pic.img)}
+                  alt=""
+                  style={{ height: 100, marginRight: 10 }}
+                />
+              </div>
+            ))}
+          </Col>
+        </Row>
+      </Modals>
+    );
+  };
   return (
     <div>
       <Layout sidebar>
@@ -104,62 +226,8 @@ const Products = (props) => {
             <Col md={12}>{renderProducts()}</Col>
           </Row>
         </Container>
-
-        <Modals show={show} handleClose={handleClose} title={"Add New Product"}>
-          <Input
-            label="Name"
-            type="text"
-            value={name}
-            placeholder="Product Name"
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            label="Price"
-            type="text"
-            value={price}
-            placeholder="Price"
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          <Input
-            label="Quantity"
-            type="text"
-            value={quantity}
-            placeholder="Quantity"
-            onChange={(e) => setQuantity(e.target.value)}
-          />
-          <Input
-            label="Description"
-            type="text"
-            value={description}
-            placeholder="Description"
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <Form.Select
-            aria-label="Default select example"
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-          >
-            <option>Select Category</option>
-            {createCategoryList(category.categories).map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </Form.Select>
-
-          {productPictures.length > 0
-            ? productPictures.map((pic, index) => (
-                <div key={index}>{pic.name}</div>
-              ))
-            : null}
-          <Input
-            label="Product Images"
-            type="file"
-            placeholder="Product Image"
-            name="productPicture"
-            onChange={handleProductPictures}
-          />
-        </Modals>
+        {renderAddProductModal()}
+        {renderProductDetailsModal()}
       </Layout>
     </div>
   );

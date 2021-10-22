@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCategory, getAllCategory } from "../../redux/actions";
 import Input from "../../UI/Input/Input";
 import Modals from "../../UI/Modal/Modal";
-
 import Layout from "../Layout/Layout";
 
 const Category = (props) => {
