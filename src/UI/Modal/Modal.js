@@ -10,9 +10,17 @@ const Modals = (props) => {
         </Modal.Header>
         <Modal.Body>{props.children}</Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={props.handleClose}>
-            Submit
-          </Button>
+          {props.buttons ? (
+            props.buttons.map((btn, index) => (
+              <Button key={index} variant={btn.color} onClick={btn.onClick}>
+                {btn.label}
+              </Button>
+            ))
+          ) : (
+            <Button variant="primary" onClick={props.handleClose}>
+              Submit
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </div>

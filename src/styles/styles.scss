@@ -5,3 +5,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.edit-btn {
+  padding: 5px 20px;
+  font-size: 12px;
+  background-color: #333333;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+.delete-btn {
+  padding: 5px 20px;
+  font-size: 12px;
+  background-color: red;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
