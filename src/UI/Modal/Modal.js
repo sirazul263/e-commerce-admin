@@ -12,13 +12,24 @@ const Modals = (props) => {
         <Modal.Footer>
           {props.buttons ? (
             props.buttons.map((btn, index) => (
-              <Button key={index} variant={btn.color} onClick={btn.onClick}>
+              <Button
+                key={index}
+                variant={btn.color}
+                className="btn-sm"
+                onClick={btn.onClick}
+              >
                 {btn.label}
               </Button>
             ))
           ) : (
-            <Button variant="primary" onClick={props.handleClose}>
-              Submit
+            <Button
+              variant="primary"
+              {...props}
+              className="btn-sm"
+              onClick={props.handleClose}
+              style={{ backgroundColor: "#333" }}
+            >
+              Save
             </Button>
           )}
         </Modal.Footer>

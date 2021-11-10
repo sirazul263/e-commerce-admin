@@ -14,6 +14,7 @@ import {
 import Orders from "./components/Orders/Orders";
 import Products from "./components/Products/Products";
 import Category from "./components/Category/Category";
+import Page from "./components/Page/Page";
 
 function App(props) {
   const dispatch = useDispatch();
@@ -38,6 +39,9 @@ function App(props) {
         </PrivateRoute>
         <PrivateRoute exact path="/category">
           <Category />
+        </PrivateRoute>
+        <PrivateRoute exact path="/page">
+          <Page />
         </PrivateRoute>
         <Route exact path="/login">
           <LogIn />

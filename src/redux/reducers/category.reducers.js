@@ -16,6 +16,7 @@ const buildNewCategories = (parentId, categories, category) => {
         _id: category._id,
         name: category.name,
         slug: category.slug,
+        type: category.type,
         children: [],
       },
     ];
@@ -26,6 +27,7 @@ const buildNewCategories = (parentId, categories, category) => {
         _id: category._id,
         name: category.name,
         slug: category.slug,
+        type: category.type,
         parentId: category.parentId,
         children: [],
       };
@@ -95,6 +97,48 @@ const categoryReducer = (state = initState, action) => {
         ...initState,
         // error: action.payload.error,
         loading: false,
+      };
+      break;
+    case categoryConstants.UPDATE_CATEGORY_REQUEST:
+      state = {
+        ...state,
+        // error: action.payload.error,
+        loading: true,
+      };
+      break;
+    case categoryConstants.UPDATE_CATEGORY_SUCCESS:
+      state = {
+        ...state,
+        // error: action.payload.error,
+        loading: false,
+      };
+      break;
+    case categoryConstants.UPDATE_CATEGORY_FAILURE:
+      state = {
+        ...state,
+        // error: action.payload.error,
+        error: action.payload.error,
+      };
+      break;
+    case categoryConstants.DELETE_CATEGORY_REQUEST:
+      state = {
+        ...state,
+        // error: action.payload.error,
+        loading: true,
+      };
+      break;
+    case categoryConstants.DELETE_CATEGORY_SUCCESS:
+      state = {
+        ...state,
+        // error: action.payload.error,
+        loading: false,
+      };
+      break;
+    case categoryConstants.DELETE_CATEGORY_FAILURE:
+      state = {
+        ...state,
+        // error: action.payload.error,
+        error: action.payload.error,
       };
       break;
     default:
